@@ -1,6 +1,8 @@
+"use strict";
+
 let router = require( 'express' ).Router();
 
-router.use( '/' )
+router.use( '/', require( './teams' ) );
 router.use( '/teams', require( './teams' ) );
 
 router.use( function ( err, req, res, next ) {

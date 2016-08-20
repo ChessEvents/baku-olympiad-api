@@ -1,3 +1,5 @@
+"use strict";
+
 var router = require( 'express' ).Router();
 var mongoose = require( 'mongoose' );
 var Team = mongoose.model( 'Team' );
