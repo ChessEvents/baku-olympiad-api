@@ -3,11 +3,11 @@ const http = require( 'http' );
 const path = require( 'path' );
 const methods = require( 'methods' );
 const express = require( 'express' );
-const bodyParser = require( 'body-parse' );
+const bodyParser = require( 'body-parser' );
 const session = require( 'express-session' );
 const cors = require( 'cors' );
 const passport = require( 'passport' );
-const errorHandler = require( 'errorhandler' );
+const errorhandler = require( 'errorhandler' );
 const mongoose = require( 'mongoose' );
 
 let isProduction = process.env.NODE_ENV === 'production';
@@ -52,11 +52,12 @@ if ( !isProduction ) {
 if ( isProduction ) {
     mongoose.connect( process.env.MONGODB_URI );
 } else {
-    mongooge.connect( 'mongodb://localhost/api-baku' );
+    mongoose.connect( 'mongodb://localhost/api-baku' );
     mongoose.set( 'debug', true );
 }
 
-require( 'models/Teams' );
+require( './models/Team' );
+require( './models/Player' );
 
 app.use( require( './routes' ) );
 app.use( ( req, res, next ) => {
