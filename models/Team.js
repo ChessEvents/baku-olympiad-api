@@ -5,12 +5,10 @@ const uniqueValidator = require( 'mongoose-unique-validator' );
 const slug = require( 'slug' );
 
 let TeamSchema = new mongoose.Schema( {
-    slug: {
+    name: {
         type: String,
-        lowercase: true,
         unique: true
     },
-    name: String,
     description: String,
     owner: String,
     openPlayers: [ {
@@ -29,14 +27,9 @@ TeamSchema.plugin( uniqueValidator, {
     message: 'is already taken'
 } );
 
-TeamSchema.pre( 'validate', function ( next ) {
-    this.slugify();
-    next();
-} );
 
 TeamSchema.methods.toJSONFor = function () {
     return {
-        slug: this.slug,
         name: this.name,
         description: this.description,
         owner: this.owner,

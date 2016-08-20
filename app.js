@@ -50,7 +50,7 @@ require( './models/Player' );
 app.use( require( './routes' ) );
 
 app.use( ( req, res, next ) => {
-	let err = new Error( 'Not Found' );
+	let err = new Error( 'Not Found!!' );
 	err.status = 400;
 	next( err );
 } );
