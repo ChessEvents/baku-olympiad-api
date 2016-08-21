@@ -2,7 +2,6 @@
 
 const mongoose = require( 'mongoose' );
 const uniqueValidator = require( 'mongoose-unique-validator' );
-const slug = require( 'slug' );
 
 let PlayerSchema = new mongoose.Schema( {
     name: String,
@@ -17,7 +16,7 @@ PlayerSchema.plugin( uniqueValidator, {
     message: 'is already taken'
 } );
 
-PlayerSchema.methods.toJSONFor = () => {
+PlayerSchema.methods.toJSONFor = function () {
     return {
         name: this.name,
         rating: this.rating,

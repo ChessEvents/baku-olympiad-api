@@ -2,7 +2,6 @@
 
 const mongoose = require( 'mongoose' );
 const uniqueValidator = require( 'mongoose-unique-validator' );
-const slug = require( 'slug' );
 
 let TeamSchema = new mongoose.Schema( {
     name: {
