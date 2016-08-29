@@ -8,7 +8,6 @@ let TeamSchema = new mongoose.Schema( {
         type: String,
         unique: true
     },
-    description: String,
     owner: String,
     openPlayers: [ {
         type: mongoose.Schema.Types.ObjectId,
@@ -18,16 +17,14 @@ let TeamSchema = new mongoose.Schema( {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Player'
     } ]
-}, {
-    timestamps: true
-} );
+});
 
 TeamSchema.plugin( uniqueValidator, {
     message: 'is already taken'
 } );
 
 
-TeamSchema.methods.toJSONFor = function () {
+TeamSchema.methods.toJSONFor = () => {
     return {
         name: this.name,
         description: this.description,
