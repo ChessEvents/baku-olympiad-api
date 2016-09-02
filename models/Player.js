@@ -3,18 +3,26 @@
 const mongoose = require( 'mongoose' );
 const uniqueValidator = require( 'mongoose-unique-validator' );
 
+// let RoundResultSchema = new mongoose.Schema( {
+//     round: Number,
+//     colour: String,
+//     result: String, // Here we have to be careful of default results!!
+//     points: Number
+// } );
+
 let PlayerSchema = new mongoose.Schema( {
     id: Number,
+    rank: Number,
     name: String,
-    nameOfficial: String,
     rating: Number,
-    ratingOfficial: Number,
     title: String,
     country: String,
-    isoCountry: String,
+    team: String,
+    fed: String,
     board: Number,
-    eventType: String
-});
+    eventType: String,
+    roundResults: Array
+} );
 
 
 PlayerSchema.plugin( uniqueValidator, {
@@ -37,4 +45,5 @@ PlayerSchema.methods.toJSONFor = function () {
     }
 };
 
+// mongoose.model( 'RoundResult', RoundResultSchema );
 mongoose.model( 'Player', PlayerSchema );

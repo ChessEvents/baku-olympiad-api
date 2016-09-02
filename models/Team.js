@@ -4,16 +4,18 @@ const mongoose = require( 'mongoose' );
 const uniqueValidator = require( 'mongoose-unique-validator' );
 
 let TeamSchema = new mongoose.Schema( {
-    name: {
-        type: String,
-        unique: true
-    },
+    name: String,
+    teamName: String,
     owner: String,
-    openPlayers: [ {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Player'
-    } ],
-    womenPlayers: [ {
+    openGold: String,
+    openSilver: String,
+    openBronze: String,
+    openIndGold: String,
+    womenGold: String,
+    womenSilver: String,
+    womenBronze: String,
+    womenIndGold: String,
+    players: [ {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Player'
     } ]
@@ -27,12 +29,10 @@ TeamSchema.plugin( uniqueValidator, {
 TeamSchema.methods.toJSONFor = () => {
     return {
         name: this.name,
-        description: this.description,
-        owner: this.owner,
+        teamName: this.teamName,
         createdAt: this.createdAt,
         updatedAt: this.updatedAt,
-        openPlayers: this.openPlayers,
-        womensPlayers: this.womensPlayers
+        players: this.players,
     }
 };
 

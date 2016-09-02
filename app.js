@@ -41,6 +41,7 @@ if ( isProduction ) {
 	mongoose.connect( process.env.MONGODB_URI );
 } else {
 	mongoose.connect( 'mongodb://localhost/api-baku' );
+    //mongoose.connect( 'mongodb://admin:test@ds023686-a0.mlab.com:23686,ds023686-a1.mlab.com:23686/fco-baku-2016?replicaSet=rs-ds023686')
 	mongoose.set( 'debug', true );
 }
 
@@ -91,3 +92,5 @@ app.use( ( err, req, res, next ) => {
 var server = app.listen( process.env.PORT || 3000, () => {
 	console.log( 'Listening on port ' + server.address().port );
 } );
+
+server.timeout = 100000;
