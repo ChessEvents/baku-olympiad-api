@@ -11,11 +11,11 @@ router.get( '/:id', ( req, res, next ) => {
 
     if ( id ) {
         Player.find( {
-            id: id
-        } )
-        .then( player => {
-            return res.json( player );
-        } ).catch( next );
+                id: id
+            } )
+            .then( player => {
+                return res.json( player );
+            } ).catch( next );
     } else {
         return res.status( 404 );
     }
@@ -42,15 +42,23 @@ router.get( '/', ( req, res, next ) => {
 // at a round result record.
 router.put( '/result/:id', ( req, res, next ) => {
 
-    let result = req.body;
+    let result = req.body.result.result;
 
     console.log( result );
 
-    Player.findOneAndUpdate({ id: req.params.id },
-        {$push: {"roundResults": result }},
-        {safe: true, upsert: true, new : true},
-        function(err, player) {
-            if( ! err ) {
+    Player.findOneAndUpdate( {
+            id: req.params.id
+        }, {
+            $push: {
+                "roundResults": result
+            }
+        }, {
+            safe: true,
+            upsert: true,
+            new: true
+        },
+        function ( err, player ) {
+            if ( !err ) {
                 res.json( player );
             } else {
                 res.json( err );

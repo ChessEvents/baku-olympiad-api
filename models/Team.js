@@ -15,6 +15,7 @@ let TeamSchema = new mongoose.Schema( {
     womenSilver: String,
     womenBronze: String,
     womenIndGold: String,
+    score: Object,
     players: [ {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Player'

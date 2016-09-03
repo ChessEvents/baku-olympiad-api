@@ -8,7 +8,10 @@ let Player = mongoose.model( 'Player' );
 // return a list of teams:
 router.get( '/', ( req, res, next ) => {
 
-    Team.find( {}, { teamName: 1, players: 1 } ).populate('players').then( teams => {
+    Team.find( {}, {
+        teamName: 1,
+        score: 1
+    } ).then( teams => {
         return res.json( teams );
     } ).catch( next );
 
@@ -19,9 +22,39 @@ router.get( '/:teamName', ( req, res, next ) => {
 
     Team.find( {
         teamName: req.params.teamName
-    } ).populate('players').then( team => {
+    } ).populate( 'players' ).then( team => {
         return res.json( team );
     } ).catch( next );
+} );
+
+
+// at a round result record.
+router.put( '/subtotal/:_id', ( req, res, next ) => {
+
+    let score = req.body;
+
+    console.log( score );
+
+    Team.findByIdAndUpdate(req.params._id,
+        {
+            $push: {
+                "score": score
+            }
+        }, {
+            safe: true,
+            upsert: true,
+            new: true
+        },
+        ( err, team ) => {
+            if ( !err ) {
+                res.json( team );
+            } else {
+                res.json( err );
+            }
+
+        }
+    );
+
 } );
 
 // create a new team:
