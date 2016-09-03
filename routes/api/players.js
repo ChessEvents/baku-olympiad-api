@@ -13,7 +13,6 @@ router.get( '/:id', ( req, res, next ) => {
         Player.find( {
             id: id
         } )
-        .populate('roundResults')
         .then( player => {
             return res.json( player );
         } ).catch( next );

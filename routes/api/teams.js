@@ -8,19 +8,21 @@ let Player = mongoose.model( 'Player' );
 // return a list of teams:
 router.get( '/', ( req, res, next ) => {
 
-    Team.find({}, { teamName: 1 }).then( teams => {
+    Team.find( {}, { teamName: 1, players: 1 } ).populate('players').then( teams => {
         return res.json( teams );
     } ).catch( next );
 
 } );
 
 // get team by teamName with all player data:
-router.get('/:teamName', (req, res, next ) => {
+router.get( '/:teamName', ( req, res, next ) => {
 
-    Team.find({ teamName: req.params.teamName }).populate('players').then( team => {
+    Team.find( {
+        teamName: req.params.teamName
+    } ).populate('players').then( team => {
         return res.json( team );
-    }).catch( next );
-});
+    } ).catch( next );
+} );
 
 // create a new team:
 router.post( '/', ( req, res, next ) => {
@@ -34,12 +36,12 @@ router.post( '/', ( req, res, next ) => {
             Player.find( {
                 id: playerId
             } ).then( player => {
-                callback( null,  player[0] );
+                callback( null, player[ 0 ] );
             } ).catch( next );
         } )
     } );
 
-    async.parallel( players , ( err, playerIds ) => {
+    async.parallel( players, ( err, playerIds ) => {
 
         if ( err ) return console.log( err );
 
