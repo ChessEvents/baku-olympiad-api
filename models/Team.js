@@ -6,6 +6,7 @@ const uniqueValidator = require( 'mongoose-unique-validator' );
 let TeamSchema = new mongoose.Schema( {
     name: String,
     teamName: String,
+    country: String,
     owner: String,
     openGold: String,
     openSilver: String,
@@ -16,6 +17,7 @@ let TeamSchema = new mongoose.Schema( {
     womenBronze: String,
     womenIndGold: String,
     score: Object,
+    playerIds: Array,
     players: [ {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Player'

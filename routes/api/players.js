@@ -14,7 +14,9 @@ router.get( '/:id', ( req, res, next ) => {
                 id: id
             } )
             .then( player => {
+
                 return res.json( player );
+
             } ).catch( next );
     } else {
         return res.status( 404 );
@@ -42,7 +44,7 @@ router.get( '/', ( req, res, next ) => {
 // at a round result record.
 router.put( '/result/:id', ( req, res, next ) => {
 
-    let result = req.body.result.result;
+    let result = req.body.result;
 
     console.log( result );
 
@@ -57,13 +59,12 @@ router.put( '/result/:id', ( req, res, next ) => {
             upsert: true,
             new: true
         },
-        function ( err, player ) {
+        ( err, player ) => {
             if ( !err ) {
                 res.json( player );
             } else {
                 res.json( err );
             }
-
         }
     );
 

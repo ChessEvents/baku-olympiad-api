@@ -17,6 +17,32 @@ router.get( '/', ( req, res, next ) => {
 
 } );
 
+// return a list of teams:
+router.get( '/detail', ( req, res, next ) => {
+
+    Team.find( {}, {
+        teamName: 1,
+        score: 1,
+        players: 1
+    } ).populate( 'players' ).then( teams => {
+        return res.json( teams );
+    } ).catch( next );
+
+} );
+
+// return a list of teams:
+router.get( '/players', ( req, res, next ) => {
+
+    Team.find( {}, {
+        teamName: 1,
+        players: 1
+    } ).populate( 'players' ).then( teams => {
+        return res.json( teams );
+    } ).catch( next );
+
+} );
+
+
 // get team by teamName with all player data:
 router.get( '/:teamName', ( req, res, next ) => {
 
@@ -32,8 +58,6 @@ router.get( '/:teamName', ( req, res, next ) => {
 router.put( '/subtotal/:_id', ( req, res, next ) => {
 
     let score = req.body;
-
-    console.log( score );
 
     Team.findByIdAndUpdate(req.params._id,
         {
@@ -69,17 +93,23 @@ router.post( '/', ( req, res, next ) => {
             Player.find( {
                 id: playerId
             } ).then( player => {
-                callback( null, player[ 0 ] );
+
+                if ( Object.keys( player ).length > 0 ) {
+                    callback( null, null );
+                } else {
+                    callback( null, null );
+                }
+
             } ).catch( next );
-        } )
+        } );
     } );
 
-    async.parallel( players, ( err, playerIds ) => {
+    async.parallel( players, ( err, playersArray ) => {
 
         if ( err ) return console.log( err );
 
         // assign player ids to the player array:
-        team.players = playerIds;
+        team.players = playersArray;
 
         team.save().then( () => {
             return res.json( {
