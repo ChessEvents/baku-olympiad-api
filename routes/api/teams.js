@@ -10,7 +10,9 @@ router.get( '/', ( req, res, next ) => {
 
     Team.find( {}, {
         teamName: 1,
-        score: 1
+        score: 1,
+        country: 1,
+        iso: 1
     } ).then( teams => {
         return res.json( teams );
     } ).catch( next );
@@ -21,9 +23,7 @@ router.get( '/', ( req, res, next ) => {
 router.get( '/detail', ( req, res, next ) => {
 
     Team.find( {}, {
-        teamName: 1,
-        score: 1,
-        players: 1
+        name: 0
     } ).populate( 'players' ).then( teams => {
         return res.json( teams );
     } ).catch( next );
@@ -53,14 +53,61 @@ router.get( '/:teamName', ( req, res, next ) => {
     } ).catch( next );
 } );
 
+router.get( '/all/countries', ( req, res, next ) => {
 
-// at a round result record.
+    console.log( 'HIT ME!' );
+    Team.aggregate( {
+        "$group": {
+            "_id": {
+                "country": "$country"
+            },
+            "iso": {
+                "$first": '$iso'
+            },
+            "countryCount": {
+                "$sum": 1
+            }
+        }
+    }, {
+        "$sort": {
+            "countryCount": -1
+        }
+    }, ( err, result ) => {
+        if ( err ) res.json( err );
+        res.json( result );
+    } );
+
+} );
+
+// update the ISO of the teams:
+router.put( '/iso/:_id', ( req, res, next ) => {
+
+    let iso = req.body.iso;
+
+    Team.findByIdAndUpdate( req.params._id, {
+            "iso": iso
+        }, {
+            safe: true,
+            upsert: true,
+            new: true
+        },
+        ( err, team ) => {
+            if ( !err ) {
+                res.json( team );
+            } else {
+                res.json( err );
+            }
+
+        } );
+
+} );
+
+// add a round result record.
 router.put( '/subtotal/:_id', ( req, res, next ) => {
 
     let score = req.body;
 
-    Team.findByIdAndUpdate(req.params._id,
-        {
+    Team.findByIdAndUpdate( req.params._id, {
             $push: {
                 "score": score
             }
@@ -95,7 +142,7 @@ router.post( '/', ( req, res, next ) => {
             } ).then( player => {
 
                 if ( Object.keys( player ).length > 0 ) {
-                    callback( null, null );
+                    callback( null, player[ 0 ] );
                 } else {
                     callback( null, null );
                 }

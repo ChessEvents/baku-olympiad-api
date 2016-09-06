@@ -7,6 +7,7 @@ let TeamSchema = new mongoose.Schema( {
     name: String,
     teamName: String,
     country: String,
+    iso: String,
     owner: String,
     openGold: String,
     openSilver: String,
