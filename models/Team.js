@@ -18,6 +18,7 @@ let TeamSchema = new mongoose.Schema( {
     womenBronze: String,
     womenIndGold: String,
     score: Object,
+    roundRank: Array,
     playerIds: Array,
     players: [ {
         type: mongoose.Schema.Types.ObjectId,
@@ -34,9 +35,7 @@ TeamSchema.methods.toJSONFor = () => {
     return {
         name: this.name,
         teamName: this.teamName,
-        createdAt: this.createdAt,
-        updatedAt: this.updatedAt,
-        players: this.players,
+        players: this.players
     }
 };
 

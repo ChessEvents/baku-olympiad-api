@@ -3,13 +3,6 @@
 const mongoose = require( 'mongoose' );
 const uniqueValidator = require( 'mongoose-unique-validator' );
 
-// let RoundResultSchema = new mongoose.Schema( {
-//     round: Number,
-//     colour: String,
-//     result: String, // Here we have to be careful of default results!!
-//     points: Number
-// } );
-
 let PlayerSchema = new mongoose.Schema( {
     id: Number,
     rank: Number,
@@ -21,6 +14,8 @@ let PlayerSchema = new mongoose.Schema( {
     fed: String,
     board: Number,
     eventType: String,
+    total: Number,
+    currentRank: Number,
     roundResults: Array
 } );
 
@@ -33,17 +28,11 @@ PlayerSchema.methods.toJSONFor = function () {
     return {
         id: this.id,
         name: this.name,
-        nameOfficial: this.nameOfficial,
         rating: this.rating,
-        ratingOfficial: this.ratingOfficial,
         country: this.country,
-        isoCountry: this.isoCountry,
         eventType: this.eventType,
-        board: this.board,
-        createdAt: this.createdAt,
-        updatedAt: this.updatedAt
+        board: this.board
     }
 };
 
-// mongoose.model( 'RoundResult', RoundResultSchema );
 mongoose.model( 'Player', PlayerSchema );

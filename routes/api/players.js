@@ -29,13 +29,35 @@ router.get( '/', ( req, res, next ) => {
     let eventType = req.query.event;
 
     Player.find( {
-        event: eventType
+        eventType: eventType
     } ).sort( {
         country: 1,
         rating: -1
-    } ).exec( ( err, model ) => {
+    } ).exec( ( err, players ) => {
         if ( !err ) {
-            res.json( model );
+            res.json( players );
+        }
+    } );
+
+} );
+
+router.get( '/top/check', ( req, res, next ) => {
+
+    let eventType = req.query.eventType;
+    let limit = parseInt(req.query.limit, 10);
+    let board = req.query.board;
+
+
+    Player.find( {
+        eventType: eventType,
+        board: board
+    } ).sort( {
+        total: -1
+    } ).limit( limit ).exec( ( err, players ) => {
+        if ( !err ) {
+            res.json( players );
+        } else {
+            res.json( err );
         }
     } );
 
@@ -67,7 +89,50 @@ router.put( '/result/:id', ( req, res, next ) => {
             }
         }
     );
+} );
 
+// update the player rank:
+router.put( '/current-rank/:id', ( req, res, next ) => {
+
+    let rank = req.body.rank;
+
+    Player.findOneAndUpdate( {
+        id: req.params.id
+    }, {
+        "currentRank": rank
+    }, {
+        safe: true,
+        upsert: true,
+        new: true
+    }, ( err, player ) => {
+        if ( !err ) {
+            res.json( player );
+        } else {
+            res.json( err );
+        }
+    } );
+} );
+
+// update the player rank:
+router.put( '/current-total/:id', ( req, res, next ) => {
+
+    let total = req.body.total;
+
+    Player.findOneAndUpdate( {
+        id: req.params.id
+    }, {
+        "total": total
+    }, {
+        safe: true,
+        upsert: true,
+        new: true
+    }, ( err, player ) => {
+        if ( !err ) {
+            res.json( player );
+        } else {
+            res.json( err );
+        }
+    } );
 } );
 
 // create a new player:

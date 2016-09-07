@@ -53,9 +53,23 @@ router.get( '/:teamName', ( req, res, next ) => {
     } ).catch( next );
 } );
 
+// get team list by country:
+router.get( '/country/:country', ( req, res, next ) => {
+
+    Team.find( {
+        country: req.params.country
+    }, {
+        teamName: 1,
+        score: 1,
+        country: 1,
+        iso: 1
+    } ).then( team => {
+        return res.json( team );
+    } ).catch( next );
+} );
+
 router.get( '/all/countries', ( req, res, next ) => {
 
-    console.log( 'HIT ME!' );
     Team.aggregate( {
         "$group": {
             "_id": {
@@ -74,9 +88,22 @@ router.get( '/all/countries', ( req, res, next ) => {
         }
     }, ( err, result ) => {
         if ( err ) res.json( err );
-        res.json( result );
-    } );
+        return res.json( result );
+    } ).catch( next );
 
+} );
+
+// get list of team by their round rank!
+router.get( '/rank/:round/', ( req, res, next ) => {
+
+    let sort =  "score.0.r" + req.params.round
+    let query = { [sort] : -1 };
+
+    Team.find( {} )
+        .sort( query )
+        .then( teams => {
+            return res.json( teams );
+        } );
 } );
 
 // update the ISO of the teams:
