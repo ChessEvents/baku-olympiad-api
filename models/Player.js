@@ -14,6 +14,7 @@ let PlayerSchema = new mongoose.Schema( {
     fed: String,
     board: Number,
     eventType: String,
+    competition: String,
     total: Number,
     currentRank: Number,
     roundResults: Array
@@ -36,3 +37,4 @@ PlayerSchema.methods.toJSONFor = function () {
 };
 
 mongoose.model( 'Player', PlayerSchema );
+mongoose.model( 'PlayerW2S', PlayerSchema );

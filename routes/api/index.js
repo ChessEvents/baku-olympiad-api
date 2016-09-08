@@ -3,7 +3,10 @@
 let router = require( 'express' ).Router();
 
 router.use( '/teams', require( './teams' ) );
+router.use( '/teams-w2s', require( './teams-w2s' ) );
+
 router.use( '/players', require( './players') );
+
 
 router.use( function ( err, req, res, next ) {
     if ( err.name === 'ValidationError' ) {

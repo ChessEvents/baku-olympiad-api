@@ -25,11 +25,9 @@ router.get( '/:id', ( req, res, next ) => {
 } );
 
 router.get( '/', ( req, res, next ) => {
-
     let eventType = req.query.event;
 
     Player.find( {
-        eventType: eventType
     } ).sort( {
         country: 1,
         rating: -1
@@ -45,12 +43,10 @@ router.get( '/top/check', ( req, res, next ) => {
 
     let eventType = req.query.eventType;
     let limit = parseInt(req.query.limit, 10);
-    let board = req.query.board;
-
+    //let board = req.query.board;
 
     Player.find( {
-        eventType: eventType,
-        board: board
+        eventType: eventType
     } ).sort( {
         total: -1
     } ).limit( limit ).exec( ( err, players ) => {

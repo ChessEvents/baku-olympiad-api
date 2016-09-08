@@ -3,7 +3,7 @@ let async = require( 'async' );
 let router = require( 'express' ).Router();
 let mongoose = require( 'mongoose' );
 let Team = mongoose.model( 'Team' );
-let Player = mongoose.model( 'Player' );
+let Player = mongoose.model( 'PlayerW2S' );
 
 // return a list of teams:
 router.get( '/', ( req, res, next ) => {
