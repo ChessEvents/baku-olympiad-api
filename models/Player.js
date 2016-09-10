@@ -37,4 +37,3 @@ PlayerSchema.methods.toJSONFor = function () {
 };
 
 mongoose.model( 'Player', PlayerSchema );
-mongoose.model( 'PlayerW2S', PlayerSchema );

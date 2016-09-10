@@ -40,3 +40,4 @@ TeamSchema.methods.toJSONFor = () => {
 };
 
 mongoose.model( 'Team', TeamSchema );
+mongoose.model( 'TeamW2S', TeamSchema );

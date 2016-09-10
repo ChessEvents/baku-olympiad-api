@@ -14,9 +14,7 @@ router.get( '/:id', ( req, res, next ) => {
                 id: id
             } )
             .then( player => {
-
                 return res.json( player );
-
             } ).catch( next );
     } else {
         return res.status( 404 );
@@ -62,7 +60,7 @@ router.get( '/top/check', ( req, res, next ) => {
 // at a round result record.
 router.put( '/result/:id', ( req, res, next ) => {
 
-    let result = req.body.result;
+    let result = req.body;
 
     console.log( result );
 

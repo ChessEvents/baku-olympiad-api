@@ -2,8 +2,8 @@
 let async = require( 'async' );
 let router = require( 'express' ).Router();
 let mongoose = require( 'mongoose' );
-let Team = mongoose.model( 'Team' );
-let Player = mongoose.model( 'PlayerW2S' );
+let Team = mongoose.model( 'TeamW2S' );
+let Player = mongoose.model( 'Player' );
 
 // return a list of teams:
 router.get( '/', ( req, res, next ) => {
@@ -12,7 +12,8 @@ router.get( '/', ( req, res, next ) => {
         teamName: 1,
         score: 1,
         country: 1,
-        iso: 1
+        iso: 1,
+        roundRank: 1
     } ).then( teams => {
         return res.json( teams );
     } ).catch( next );
@@ -204,6 +205,7 @@ router.post( '/', ( req, res, next ) => {
     let players = [];
 
     data.players.forEach( playerId => {
+
         players.push( callback => {
             Player.find( {
                 id: playerId
@@ -228,7 +230,8 @@ router.post( '/', ( req, res, next ) => {
 
         team.save().then( () => {
             return res.json( {
-                team: team.toJSONFor()
+                // team: team.toJSONFor()
+                messsage: 'done'
             } );
         }, error => {
             console.log( error );

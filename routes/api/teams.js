@@ -12,7 +12,8 @@ router.get( '/', ( req, res, next ) => {
         teamName: 1,
         score: 1,
         country: 1,
-        iso: 1
+        iso: 1,
+        roundRank: 1
     } ).then( teams => {
         return res.json( teams );
     } ).catch( next );
@@ -62,7 +63,8 @@ router.get( '/country/:country', ( req, res, next ) => {
         teamName: 1,
         score: 1,
         country: 1,
-        iso: 1
+        iso: 1,
+        roundRank: 1
     } ).then( team => {
         return res.json( team );
     } ).catch( next );
