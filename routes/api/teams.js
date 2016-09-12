@@ -14,6 +14,7 @@ router.get( '/', ( req, res, next ) => {
         country: 1,
         iso: 1,
         roundRank: 1
+        // players: 1
     } ).then( teams => {
         return res.json( teams );
     } ).catch( next );

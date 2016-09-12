@@ -16,6 +16,7 @@ let PlayerSchema = new mongoose.Schema( {
     eventType: String,
     competition: String,
     total: Number,
+    picked: Number,
     currentRank: Number,
     roundResults: Array
 } );
