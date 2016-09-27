@@ -13,7 +13,8 @@ router.get( '/', ( req, res, next ) => {
         score: 1,
         country: 1,
         iso: 1,
-        roundRank: 1
+        roundRank: 1,
+        bonusScore: 1
     } ).then( teams => {
         return res.json( teams );
     } ).catch( next );
@@ -36,7 +37,8 @@ router.get( '/players', ( req, res, next ) => {
 
     Team.find( {}, {
         teamName: 1,
-        players: 1
+        players: 1,
+        bonusScore: 1
     } ).populate( 'players' ).then( teams => {
         return res.json( teams );
     } ).catch( next );
@@ -67,6 +69,24 @@ router.get( '/country/:country', ( req, res, next ) => {
     } ).then( team => {
         return res.json( team );
     } ).catch( next );
+} );
+
+router.get( '/bonus-points/get', ( req, res, next ) => {
+
+  Team.find( {}, {
+    teamName: 1,
+    openGold: 1,
+    openSilver: 1,
+    openBronze: 1,
+    openIndGold: 1,
+    womenGold: 1,
+    womenSilver: 1,
+    womenBronze: 1,
+    womenIndGold: 1
+  } ).then( teams => {
+    return res.json( teams );
+  } ).catch( next );
+
 } );
 
 router.get( '/all/countries', ( req, res, next ) => {
@@ -128,6 +148,26 @@ router.get( '/rank/:round', ( req, res, next ) => {
         } );
 } );
 
+// get list of teams by their OVERALL round rank!
+router.get( '/bonus/total', ( req, res, next ) => {
+
+    let query = {
+        'score.0.total': -1
+    };
+
+    console.log( query );
+
+    Team.find( {}, {
+        _id : 1,
+        score: 1
+    } )
+        .sort( query )
+        .then( teams => {
+            return res.json( teams );
+        } );
+} );
+
+
 // update teams with their rank per round!
 router.put( '/rank/:_id', ( req, res ) => {
 
@@ -148,6 +188,36 @@ router.put( '/rank/:_id', ( req, res ) => {
 
     } );
 
+} );
+
+// update teams bonus score with their bonus score:
+router.put( '/bonus-points/:_id', ( req, res ) => {
+
+  Team.findByIdAndUpdate( req.params._id, {
+    bonusScore: req.body.bonusScore
+  }, {
+    safe: true,
+    upsert: true,
+    new: true
+  }, ( err, team ) => {
+    if ( !err ) return res.json( team );
+    return res.json( err );
+  } );
+} );
+
+// update teams-w2s with missing women individual gold:
+router.put( '/women-ind-gold/:teamName', ( req, res ) => {
+
+  Team.findOneAndUpdate({ teamName: req.params.teamName }, {
+    womenIndGold: req.body.womenIndGold
+  }, {
+    safe: true,
+    upsert: true,
+    new: true
+  }, ( err, team ) => {
+    if ( !err ) return res.json( team );
+    return res.json( err );
+  } );
 } );
 
 // update the ISO of the teams:
@@ -175,7 +245,6 @@ router.put( '/iso/:_id', ( req, res, next ) => {
 router.put( '/subtotal/:_id', ( req, res, next ) => {
 
     let score = req.body;
-
     Team.findByIdAndUpdate( req.params._id, {
             $push: {
                 "score": score
@@ -191,10 +260,8 @@ router.put( '/subtotal/:_id', ( req, res, next ) => {
             } else {
                 res.json( err );
             }
-
         }
     );
-
 } );
 
 // create a new team:

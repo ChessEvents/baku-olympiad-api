@@ -18,6 +18,7 @@ let TeamSchema = new mongoose.Schema( {
     womenBronze: String,
     womenIndGold: String,
     score: Object,
+    bonusScore: Object,
     roundRank: Array,
     playerIds: Array,
     players: [ {
